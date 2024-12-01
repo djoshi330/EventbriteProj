@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events in {{ city }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .event {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        .event h3 {
+            margin: 0;
+        }
+        .event p {
+            margin: 5px 0;
+        }
+        .event a {
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Events in {{ city }}</h1>
+    <div>
+        {% for event, details in events.items() %}
+        <div class="event">
+            <h3>{{ event }}</h3>
+            <p><strong>Genre:</strong> {{ details['genre'] }}</p>
+            <p><strong>Venue:</strong> {{ details['venue'] }}</p>
+            <p><strong>More Information:</strong> <a href="{{ details['url'] }}" target="_blank">Click here</a></p>
+        </div>
+        {% else %}
+        <p>No events found for {{ city }}.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

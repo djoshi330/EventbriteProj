@@ -30,11 +30,11 @@ This project showcases integration with external APIs, dynamic frontend interact
 
 ├── templates/               # HTML templates
 
-│   ├── index.html           # Homepage with search form
+   ├── index.html           # Homepage with search form
 
-│   ├── events.html          # Search results for events
+   ├── events.html          # Search results for events
 
-│   ├── favorites.html       # Favorites page
+   ├── favorites.html       # Favorites page
 
 ├── static/                  # Static assets (CSS, JavaScript)
 

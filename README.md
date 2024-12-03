@@ -23,16 +23,21 @@ This project showcases integration with external APIs, dynamic frontend interact
 - **Server**: Uvicorn for running the FastAPI application
 
 ## Project Structure
-## Project Structure
 
-.
 ├── main.py                  # Backend logic using FastAPI
+
 ├── ticketmaster_api.py      # API integration for Ticketmaster
+
 ├── templates/               # HTML templates
+
 │   ├── index.html           # Homepage with search form
+
 │   ├── events.html          # Search results for events
+
 │   ├── favorites.html       # Favorites page
+
 ├── static/                  # Static assets (CSS, JavaScript)
+
 └── .env                     # Environment variables (not included in repository)
 
 

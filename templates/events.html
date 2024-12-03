@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events in {{ city }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .event {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        .event h3 {
+            margin: 0;
+        }
+        .event p {
+            margin: 5px 0;
+        }
+        .event a {
+            color: #007BFF;
+        }
+        .favorite-button {
+            background-color: pink;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .favorite-button:hover {
+            background-color: darkred;
+        }
+        .top-bar {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .top-bar a {
+            background-color: rgb(239, 97, 97);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .top-bar a:hover {
+            background-color: rgb(200, 50, 50);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/favorites">View Favorites</a>
+    </div>
+    <h1>Events in {{ city }}</h1>
+    <div>
+        {% for event, details in events.items() %}
+        <div class="event">
+            <h3>{{ event }}</h3>
+            <p><strong>Genre:</strong> {{ details['genre'] }}</p>
+            <p><strong>Venue:</strong> {{ details['venue'] }}</p>
+            <p><strong>More Information:</strong> <a href="{{ details['url'] }}" target="_blank">Click here</a></p>
+            <button class="favorite-button" onclick="addToFavorites(this, '{{ event }}', '{{ details['genre'] }}', '{{ details['venue'] }}', '{{ details['url'] }}')">
+                Add to Favorites
+            </button>
+        </div>
+        {% else %}
+        <p>No events found for {{ city }}.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function addToFavorites(button, eventName, genre, venue, url) {
+            const formData = new FormData();
+            formData.append('event_name', eventName);
+            formData.append('genre', genre);
+            formData.append('venue', venue);
+            formData.append('url', url);
+
+            fetch('/add_favorite', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Added to favorites") {
+                    button.innerHTML = "Added to Favorites";
+                    button.disabled = true;
+                } else if (data.message === "Event is already in favorites") {
+                    alert("This event is already in your favorites.");
+                } else {
+                    alert("Failed to add to favorites. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            });
+        }
+    </script>
+</body>
+</html>

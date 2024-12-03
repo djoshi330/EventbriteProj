@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favorites</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .event {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        .event h3 {
+            margin: 0;
+        }
+        .event p {
+            margin: 5px 0;
+        }
+        .event a {
+            color: #007BFF;
+        }
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .remove-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Favorites</h1>
+    <div class="top-bar">
+        <button onclick="analyzeFavorites()" class="analyze-button">Analyze Favorites</button>
+    </div>
+    <div id="persona-result"></div>
+    <div>
+        {% for event in favorites %}
+        <div class="event">
+            <h3>{{ event['event_name'] }}</h3>
+            <p><strong>Genre:</strong> {{ event['genre'] }}</p>
+            <p><strong>Venue:</strong> {{ event['venue'] }}</p>
+            <p><strong>More Information:</strong> <a href="{{ event['url'] }}" target="_blank">Click here</a></p>
+            <button class="remove-button" onclick="removeFavorite('{{ event['event_name'] }}')">Remove</button>
+        </div>
+        {% else %}
+        <p>No favorites added yet.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function removeFavorite(eventName) {
+            const formData = new FormData();
+            formData.append('event_name', eventName);
+
+            fetch('/remove_favorite', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Removed from favorites") {
+                    location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert("Failed to remove from favorites. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            });
+        }
+        function analyzeFavorites() {
+        fetch('/analyze_favorites')
+            .then(response => response.json())
+            .then(data => {
+                if (data.persona) {
+                    document.getElementById("persona-result").innerHTML = `<h3>Your Persona:</h3><p>${data.persona}</p>`;
+                } else if (data.message) {
+                    alert(data.message);
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while analyzing favorites.");
+            });
+        }
+    </script>
+</body>
+</html>

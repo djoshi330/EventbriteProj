@@ -36,6 +36,12 @@
         .remove-button:hover {
             background-color: #c82333;
         }
+        div#persona-result{
+            border: 2px solid pink;
+            padding: 10px;
+            border-radius: 5px;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +103,29 @@
                 alert("An error occurred while analyzing favorites.");
             });
         }
+        function analyzeFavorites() {
+    const resultDiv = document.getElementById("persona-result");
+    resultDiv.innerHTML = "Loading..."; // Display "Loading..." immediately
+
+    fetch('/analyze_favorites')
+        .then(response => response.json())
+        .then(data => {
+            if (data.persona) {
+                resultDiv.innerHTML = `<h3>Your Persona:</h3><p>${data.persona}</p>`;
+            } else if (data.message) {
+                alert(data.message);
+                resultDiv.innerHTML = ""; // Clear "Loading..." if there's a message
+            } else if (data.error) {
+                alert(data.error);
+                resultDiv.innerHTML = ""; // Clear "Loading..." if there's an error
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred while analyzing favorites.");
+            resultDiv.innerHTML = ""; // Clear "Loading..." on error
+        });
+    }   
     </script>
 </body>
 </html>

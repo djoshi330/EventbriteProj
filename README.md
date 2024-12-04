@@ -19,6 +19,7 @@ This project showcases integration with external APIs, dynamic frontend interact
 - **APIs**:
   - [Ticketmaster API](https://developer.ticketmaster.com/) for retrieving event data
   - [OpenAI API](https://openai.com/api/) for generating persona descriptions
+    -may need to: pip install openai==0.28
 - **Environment Management**: `dotenv` for managing API keys
 - **Server**: Uvicorn for running the FastAPI application
 
